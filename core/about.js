@@ -26,7 +26,8 @@ export default class OnepageAbout extends PolymerElement {
                 margin: 7px;
                 max-width: 50vw;
                 transition: all .2s ease-in-out;
-                /*box-shadow: 0px 2px 40px black;*/ 
+                box-shadow: 0px 2px 40px black;
+                border: 2px solid rgba(44,98,130,1); 
             }
 
             .about-image:hover, .about-image:active {
@@ -116,29 +117,32 @@ export default class OnepageAbout extends PolymerElement {
                 .images {
                     width: 300px;
                 }
-                
+
               }
         </style>
 
-        <div class="circle">
-            
-        Vi är gänget som går på matcher. Dricker öl, åker snett, kommer i tid, klär oss snyggt, eldar, ramlar och sjunger högt. Vi håller ihop, bjuder upp, hatar, hånar, skrattar och gråter. Det har vi alltid gjort och så tänker vi fortsätta.
-             
-        </div>
-      
+              
 
         <div class="images">
             <div class="about-image one" onclick=""></div>
             <div class="about-image two" onclick=""></div>
             <div class="about-image three" onclick=""></div>
             <div class="about-image four" onclick=""></div>
+           
+
             <div class="about-image five" onclick=""></div>
             <div class="about-image six" onclick=""></div>
             <div class="about-image seven" onclick=""></div>
             <div class="about-image eight" onclick=""></div>
             <div class="about-image nine" onclick=""></div>
             <div class="about-image ten" onclick=""></div>
-        </div>    
+        </div>  
+        
+        <div class="circle">
+            
+        Vi är gänget som går på matcher. Dricker öl, åker snett, kommer i tid, klär oss snyggt, eldar, ramlar och sjunger högt. Vi håller ihop, bjuder upp, hatar, hånar, skrattar och gråter. Det har vi alltid gjort och så tänker vi fortsätta.
+             
+        </div>
         `
     }
 }

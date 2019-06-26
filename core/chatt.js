@@ -1,5 +1,6 @@
 import { html, PolymerElement } from './../../node_modules/@polymer/polymer/polymer-element.js';
 import {} from '../../../node_modules/@polymer/polymer/lib/elements/dom-repeat.js';
+
 export default class OnepageChatt extends PolymerElement {
 
     static get template() {
@@ -30,15 +31,20 @@ export default class OnepageChatt extends PolymerElement {
             }
 
             .input-field {
-                height: auto;
+                
                 background-color: #112533;
                
                 box-shadow: 0 -5px 20px -5px black;
                 padding: 12px 6px;
                 position: absolute;
-                left:0;
-                right: 0;
-                border-top: 1px solid rgba(44,98,130,1);
+                left: 12px;
+                right: 12px;
+                top: 50px;
+                bottom:0;
+                display:none;
+            }
+            .input-field.open {
+                display: block;
             }
 
             .input-field .row {
@@ -69,7 +75,8 @@ export default class OnepageChatt extends PolymerElement {
             }
 
             input.name, input.mess {
-                margin-bottom: 6px;
+                margin-bottom: 10px;
+                
             }
 
             .message-row {
@@ -151,23 +158,76 @@ export default class OnepageChatt extends PolymerElement {
                 width: 60px;
                 height: 60px;
                 border-radius: 50%;
-                background: rgba(96,161,199,0.8);
+                background: rgb(96,161,199);
+                background: rgb(44,98,130);
+                color: white;
                 z-index: var(--z-index-top);
                 box-shadow: 1px 1px 12px black;
                 display: flex;
-                justify-content: center;
-                align-items: center;
-                transition: all .5s ease-in-out;
+                flex-direction: column;
+                justify-content: start;
+                flex-wrap: wrap;
+                overflow: hidden;
+                
+                transition: all .5s ease;
             }
+
             .pencil-button:hover {
-                background: white;
+                animation: bump 0.5s ease;
             }
-            .pencil-button span.icon-pencil{
+
+            .pencil-button.open:hover {
+                animation: no;
+            }
+
+            @keyframes bump {
+                0% {transform: rotate(0deg)}
+                50% {transform: rotate(-10deg)}
+                100% {transform: rotate(0deg)}
+            }
+            
+
+            /*.pencil-button span.icon-pencil {
                 transition: all .5s ease-in-out;
             }
             .pencil-button:hover span.icon-pencil{
                 transform: scale(1.5) ;
+            }*/
+            .pencil-button.open {
+                background: rgba(44,98,130,1);
+                flex-direction: column;
+                width: calc(100% - 12px);
+                height: calc(100% - 12px - 40px);
+                border-radius: 0;
+                transition: all 0.5s ease;
+                opacity: 1;
             }
+            .pencil-button .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 60px;
+                
+                background: transparent;
+            }
+
+            .pencil-button > .inputs {
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                width: 300px;
+                margin: auto;  /* Magic! */
+            }
+
+            .pencil-button > .header > span {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 60px;
+                width: 60px;
+            }
+            
         </style>
         
         <div class="content">
@@ -182,18 +242,32 @@ export default class OnepageChatt extends PolymerElement {
                 </div>
             </template>
         </div>
+      
+        <!--div class="input-field" class$="{{getClass(viewInput)}} input-field">
+                <div class="row">
+                    <input class="name" placeholder="Name" value="[[name]]" on-change="updateName" required/>
+                    <input class="mess" placeholder="Säger.." value="[[message]]" on-change="updateMessage" required/> 
+                </div>
+                <onepage-button on-click="submit">Skicka</onepage-button>
+        </div-->   
         
-        <div class="input-field">
-            <div class="row">
-                <input class="name" placeholder="Name" value="[[name]]" on-change="updateName" required/>
-                <input class="mess" placeholder="Säger.." value="[[message]]" on-change="updateMessage" required/> 
+        <div class="pencil-button" class$="pencil-button {{getClass(viewInput)}}">
+            
+            <div class="header">
+                <span class="icon-pencil" on-click="changeViewInput"></span>
+                <span on-click="changeViewInput">X</span>
             </div>
-            <onepage-button on-click="submit">Skicka</onepage-button>
-        </div>   
-        
-        <div class="pencil-button">
-            <span class="icon-pencil"></span>
+            
+            <div class="inputs">
+                <input class="mess" placeholder="Säger.." value="[[message]]" on-change="updateMessage" required/> 
+                <input class="name" placeholder="Name" value="[[name]]" on-change="updateName" required/>
+                
+                <onepage-button on-click="submit">Skicka</onepage-button>
+            </div>
+
         </div>
+
+       
         `
     }
 
@@ -213,12 +287,25 @@ export default class OnepageChatt extends PolymerElement {
             message: {
                 type: String,
                 reflectToAttribute: true
-            }
+            },
+            viewInput: {
+                type: Boolean,
+                value: false
+            },
+           
         }
     }
 
     constructor() {
         super();
+    }
+
+    getClass(viewInput){
+        return viewInput ? "open" : "";
+    }
+    changeViewInput() {
+        this.viewInput = !this.viewInput;
+       
     }
 
     delete(event) {
@@ -228,8 +315,9 @@ export default class OnepageChatt extends PolymerElement {
     }
 
     submit () {
+        this.viewInput = !this.viewInput;
         this.dispatchEvent(new CustomEvent('submit-chatt', { bubbles: true, composed: true }));    
-    } 
+    }
 
     updateName(event) {
         this.dispatchEvent(new CustomEvent('update-name', { bubbles: true, composed: true, detail: { value: event.target.value } }));
