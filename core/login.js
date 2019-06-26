@@ -4,41 +4,40 @@ import {} from '../../../node_modules/@polymer/polymer/lib/elements/dom-repeat.j
 import OnepageButton from './button.js';
 import OnepageLoader from './loader.js';
 
-export default class OnepageLogin extends PolymerElement {
+export default class AskewLogin extends PolymerElement {
 
     static get template() {
         return html`
         <style>
-            :host {
-                grid-area: login;
+            :host {                
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
-                align-items: left;
-                background-color: var(--accent-color);
-                color: var(--background);
+                justify-content: flex-start;
+                align-items: center;
+                color: var(--white);
+                height: 100%;
+                padding: 12px;
             }
 
-            ::slotted(*) {
-                padding: var(--padding);
-            }
 
             input, button {
-                padding: 12px;
-                margin: 0 12px 12px 12px;
+                padding: 6px;
             }
 
-            div {
+            /*div {
                 padding: 0 var(--padding);
-            }
+            }*/
 
             button {
                 margin: var(--padding);
             }
 
             input {
-                margin: 0 var(--padding);
+                display: block;
+                margin-bottom: 12px;
+                
             }
+
             onepage-loader {
                 display: none;
             }
@@ -47,31 +46,46 @@ export default class OnepageLogin extends PolymerElement {
                 display: flex;
             }
 
+            div.trainers {
+                margin-bottom: 40px;
+            }
             img  {
-                padding: 12px;
+                padding: 6px;
             }
 
             img[active] {
-                background: white;
+                background: rgb(96, 161, 199);;
                 border-radius: 12px;
             }
+
+            div.infotext{
+                padding: 10vw 0 60px 0;
+                text-shadow: 0px 0px 24px black;
+            }
+            div.login-box {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                max-width: 478px;
+            }
+            
         </style>
-        
-        <slot></slot>
 
         <template is="dom-if" if="[[auth]]">
-            <div>Du är inloggad som</div>
+            <div class="infotext">
+                Du är inloggad som <slot></slot>
+            </div>
+            
             <template is="dom-if" if="[[newuser]]">
-            <div style="color: var(--warning-color); padding: 14px var(--padding);">Första inloggningen! Skriv ditt Nic</div>
-            <input id="name" placeholder="Skriv ditt nic här.." value="[[user]]" on-change="changeName" style="border: 1px solid var(--warning-color)"></input>
-            
+                <div style="color: var(--warning-color); padding: 14px var(--padding);">Första inloggningen! Skriv ditt Nic</div>
+                <input id="name" placeholder="Skriv ditt nic här.." value="[[user]]" on-change="changeName" style="border: 1px solid var(--warning-color)"></input>
             </template>
+
             <template is="dom-if" if="[[!newuser]]">
-            <input id="name" placeholder="Skriv ditt nic här.." value="[[user]]" on-change="changeName"></input>
-            
+                <input id="name" placeholder="Skriv ditt nic här.." value="[[user]]" on-change="changeName"></input>    
             </template>
             
-            <div style="padding: 12px var(--padding)">    
+            <div class="trainers">    
                 <template is="dom-repeat" items="[[trainers]]" as="trainer">
                     <img src="img/trainers/[[trainer.name]]" active$=[[trainer.active]] on-click="changeTrainers" value="[[trainer.name]]">
                 </template>
@@ -84,16 +98,18 @@ export default class OnepageLogin extends PolymerElement {
 
         <template is="dom-if" if="[[!auth]]">
         
-            <div style="padding-bottom: 14px">Du är inte inloggad. För att kunna se vilka som är aktiva på kartan måste du logga in. </div> 
-            <div>Email</div>
-            <input autocomplete="off" placeholder="Skriv din mailadress" id="email" value="[[email]]" on-change="changeEmail" required></input>
+            <div class="infotext">
+                Du är inte inloggad. <br/>För att kunna se vilka som är aktiva på kartan måste du logga in.
+            </div> 
             
-            <div>Password</div>
-            <input type="password" placeholder="password" id="password" value="[[cred.pw]]" required></input>
-                
-            <onepage-button on-click="login">Login
-                <onepage-loader spin></onepage-loader>
-            </onepage-button>
+            <div class="login-box">
+                <input autocomplete="off" placeholder="Skriv din mailadress" id="email" value="[[email]]" on-change="changeEmail" required></input>
+                <input type="password" placeholder="password" id="password" value="[[cred.pw]]" required></input>
+                <onepage-button on-click="login">Login
+                    <onepage-loader spin></onepage-loader>
+                </onepage-button>
+            </div>
+
         </template>
 
         `
@@ -138,15 +154,14 @@ export default class OnepageLogin extends PolymerElement {
 
    
     login(event) {
-        this.dispatchEvent(new CustomEvent('login', { bubbles: true, composed: true, detail: { email: this.email, pw: this.cred.pw } }));
+        this.dispatchEvent(new CustomEvent('login', { bubbles: true, composed: true, detail: { 
+            email: this.email, 
+            pw: this.cred.pw 
+        } }));
     }
 
     logout(event) {
         this.dispatchEvent(new CustomEvent('logout', { bubbles: true, composed: true, }));
-    }
-
-    logout(event) {
-        this.dispatchEvent(new CustomEvent('samling', { bubbles: true, composed: true, }));
     }
 
     changeEmail(event) {
@@ -162,9 +177,8 @@ export default class OnepageLogin extends PolymerElement {
     }
 
     changeTrainers(event) {
-        //console.log(event.target.value);
         this.dispatchEvent(new CustomEvent('change-trainers', { bubbles: true, composed: true, detail: { name: event.target.value}}));
     }
 }
 
-window.customElements.define('onepage-login', OnepageLogin);
+window.customElements.define('askew-login', AskewLogin);

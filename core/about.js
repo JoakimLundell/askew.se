@@ -8,11 +8,12 @@ export default class OnepageAbout extends PolymerElement {
             :host {
                 display: flex;
                 flex-direction: column;
-                justify-content: space-around;
+                justify-content: around;
+                align-items: center;
                 background-color: transparent;
                 color: var(--white);
                 height: 100%;
-                padding: 0 60px;
+                padding: 0 6px;
             }
 
             .about-image {
@@ -25,11 +26,12 @@ export default class OnepageAbout extends PolymerElement {
                 margin: 7px;
                 max-width: 50vw;
                 transition: all .2s ease-in-out;
-                box-shadow: 0px 2px 40px black; 
+                /*box-shadow: 0px 2px 40px black;*/ 
             }
 
             .about-image:hover, .about-image:active {
                 transform: scale(2.1); 
+                transition: transform 1s ease;
             }
 
             .one {
@@ -66,16 +68,64 @@ export default class OnepageAbout extends PolymerElement {
             .images {
                 display: flex;
                 flex-flow: row wrap;
-                justify-content: flex-start;
-                padding: 14px var(--padding);
+                justify-content: center;
             }
 
-            ::slotted(*) {
-                padding: 0 var(--padding);
+            .circle {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 2em 6px;
+                padding: 1rem 1rem;
+                text-align: center;
+                background-color: rgba(12,12,12,0.6);
+                color: white;
+                width: 80vw;
+                height: auto;
+                font-size: 12px;
+                animation: bump 0.3s ease;
+                transition: all 1s ease;
+              }
+              
+            @keyframes bump {
+                0% {transform: scale(0.9)}
+                90% {transform: scale(1.1)}
+                100% {transform: scale(1.0)}
             }
+              
+            @media screen and (min-width: 480px) {
+                
+                .circle {
+                    width: 200px;
+                    height: 200px;
+                    border-radius: 50%;
+                    padding: 30px;
+                    transition: all 1s ease;
+                }
+            
+            }
+
+              
+              @media (min-width: 768px) {
+                
+                :host {
+                    flex-direction: row;
+                    justify-content: space-around;
+                }
+
+                .images {
+                    width: 300px;
+                }
+                
+              }
         </style>
 
-        <slot></slot>
+        <div class="circle">
+            
+        Vi är gänget som går på matcher. Dricker öl, åker snett, kommer i tid, klär oss snyggt, eldar, ramlar och sjunger högt. Vi håller ihop, bjuder upp, hatar, hånar, skrattar och gråter. Det har vi alltid gjort och så tänker vi fortsätta.
+             
+        </div>
+      
 
         <div class="images">
             <div class="about-image one" onclick=""></div>

@@ -2,6 +2,7 @@ import { PolymerElement, html } from './../node_modules/@polymer/polymer/polymer
 
 
 import OnepageHeader from './core/header.js';
+import AskewFooter from './core/footer.js';
 import OnepageHome from './core/home.js';
 import OnepageAbout from './core/about.js';
 import OnepageText from './core/text.js';
@@ -10,7 +11,7 @@ import OnepageMenuButton from './core/menu-button.js';
 import OnepageMap from './core/map.js';
 import OnepageMenu from './core/menu.js';
 import OnepageFlash from './core/flash.js';
-import OnepageLogin from './core/login.js';
+import AskewLogin from './core/login.js';
 import OnepageInfo from './core/info.js';
 import OnepageLogotext from './core/logotext.js';
 import AskewContent from './core/content.js';
@@ -55,6 +56,10 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
         this.addEventListener('route-go', this.routeGoHandler)
         this.addEventListener('reload', this.reloadHandler)
 
+        window.addEventListener('resize', () => {
+            this.setVH();
+        });
+
          
         // ------------------
         // Initialize events
@@ -72,7 +77,7 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
         <style>
             :host {
                 display: grid;
-                grid-template-rows: 50px calc(100vh - 50px);
+                grid-template-rows: 48px calc( calc( var(--vh) * 100) - 48px);
                 grid-template-columns: 100vw;
                 grid-template-areas:
                 "header"
@@ -142,7 +147,7 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
 
         
 
-        <onepage-header navigation="[[state.navigation]]" auth="[[state.auth]]" active="[[state.viewPage]]"></onepage-header>
+        <onepage-header navigation="[[state.navigation]]" current-route="[[state.viewPage]]" auth="[state.auth]"></onepage-header>
         
         <askew-content navigation="[[state.navigation]]" view="[[state.viewPage]]">
             
@@ -156,10 +161,14 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
 
 
             <onepage-about link="about" id="about">
-                <onepage-text class="paragraph">Om oss<br /> Vi är gänget som går på matcher. Dricker öl, åker snett, kommer i tid, klär oss snyggt, eldar, ramlar och sjunger högt. Vi håller ihop, bjuder upp, hatar, hånar, skrattar och gråter. Det har vi alltid gjort och så tänker vi fortsätta.</onepage-text>
+                <span>Vi är gänget som går på matcher. Dricker öl, åker snett, kommer i tid, klär oss snyggt, eldar, ramlar och sjunger högt. Vi håller ihop, bjuder upp, hatar, hånar, skrattar och gråter. Det har vi alltid gjort och så tänker vi fortsätta.</span>
             </onepage-about>
 
+            <askew-login link="login" auth="[[state.auth]]" trainers="[[state.trainers]]">[[state.user.name]]</askew-login>
+
         </askew-content>
+        <!--askew-footer auth="[[state.auth]]" nic="[[state.user.name]]">askew.se</askew-footer-->
+        <onepage-flash></onepage-flash>
          `
     }
 
@@ -210,10 +219,11 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
                     trainers: [],
                     currentRoute: 'map',
                     navigation: [
-                        { 'name': 'home', 'open': true },
-                        { 'name': 'map', 'open': false },
-                        { 'name': 'chatt', 'open': false },
-                        { 'name': 'about', 'open': false }
+                        { 'name': 'home', 'active': true, 'link-name': 'hem', 'icon':'icon-home' },
+                        { 'name': 'map', 'active': false, 'link-name': 'karta', 'icon':'icon-location2' },
+                        { 'name': 'chatt', 'active': false, 'link-name': 'IM', 'icon':'icon-bubbles4' },
+                        { 'name': 'about', 'active': false, 'link-name': 'om', 'icon':'icon-profile' },
+                        { 'name': 'login', 'active': false, 'link-name': 'login', 'icon':'icon-enter' }
                     ],
                     viewPage: 'home',
                     reload: false,
@@ -224,7 +234,19 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
 
     ready() {
         super.ready();
-        this.set('state.user.email', window.localStorage.getItem('emailForSignIn'))
+        // TODO Check and see what is wrong in this.
+        this.set('state.user.email', window.localStorage.getItem('emailForSignIn'));
+        // Set VH
+        this.setVH();
+    }
+
+    setVH() {
+        // Get 
+        let vh = window.innerHeight * 0.01;
+        // set state
+        this.set('state.vh', vh);
+        // set the style property to easy access from css
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
 
     routeHandler() {
@@ -258,6 +280,19 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
 
     navigationHandler(to) {
         this.set('state.viewPage', to.detail.target); 
+        //console.log("NavigationHandler" + to.detail.target)
+        let navigation = this.get("state.navigation");
+        navigation.forEach(element => {
+            //console.log(element.name)
+            if(element.name === to.detail.target) {
+                //console.log("match");
+                element.open = true;
+            } else {
+                element.open = false;
+            }
+        });
+        //console.dir(navigation);
+        this.set("state.navigation", navigation);
     }
 
  
@@ -456,14 +491,24 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
     /* ***** */
     checkLoginHandler() {
         firebase.auth().onAuthStateChanged(function(user) {
+            
+           
+
             if (user) {
                 this._confirmLogin(user);
+                
             } else {
                 this.set('state.auth', false);
                 this.set('state.user.name', 'Gäst');
+                
+                
+                
                 //this.dispatchEvent(new CustomEvent('guest-login')); 
                 //this.dispatchEvent(new CustomEvent('start-geolocation'));
-            }           
+            }     
+            
+           
+
         }.bind(this));
     }
 
@@ -491,6 +536,7 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
     }
 
     loginHandler(user) {
+        console.log(user.detail.email + ' ' + user.detail.pw);
         this.set('state.loading', true);      
         let email = user.detail.email;
         let pw = user.detail.pw;
@@ -499,9 +545,7 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
             .then(function(user) {
                 window.localStorage.setItem('emailForSignIn', email);
                 this.set('state.loading', false);
-                this.dispatchEvent(new CustomEvent('navigate', { bubbles: true, composed: true, detail: { target: '#map' } }));
-                
-
+                this.dispatchEvent(new CustomEvent('navigate', { bubbles: true, composed: true, detail: { target: 'home' } }));
             }.bind(this))
             .catch(function(error) {
                 this.dispatchEvent(new CustomEvent('flash', { detail: { message: error } }));
@@ -544,6 +588,16 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
         });
 
     }
+
+    /*setLoginIcon(auth) {
+        console.log(auth);
+        let icon = (auth) ? 'icon-user' : 'icon-enter';
+        console.log(icon);
+        var item = this.get('state.navigation');
+        console.dir(item);
+        item[4].icon = icon;
+        this.set('state.navigation', item)
+    }*/
 
 
 
@@ -675,10 +729,10 @@ export default class App extends RouterMixin(MapMixin(PolymerElement)) {
 
     /*static get observers() {
         return [
-            'select(state.navigation)'
+            'setLoginIcon(state.auth)'
         ]
-    }
-
+    }*/
+    /*
     select (navigation) {
         
         navigation.forEach(element => {

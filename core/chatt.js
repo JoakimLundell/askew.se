@@ -4,6 +4,8 @@ export default class OnepageChatt extends PolymerElement {
 
     static get template() {
         return html`
+        <link rel="stylesheet" href="./../shared/icons.css" />
+
         <style>
             :host {
                 grid-area: chatt;
@@ -29,8 +31,14 @@ export default class OnepageChatt extends PolymerElement {
 
             .input-field {
                 height: auto;
-                background-color: #0a171f;
-                box-shadow: 0 -5px 15px -5px black;
+                background-color: #112533;
+               
+                box-shadow: 0 -5px 20px -5px black;
+                padding: 12px 6px;
+                position: absolute;
+                left:0;
+                right: 0;
+                border-top: 1px solid rgba(44,98,130,1);
             }
 
             .input-field .row {
@@ -38,26 +46,30 @@ export default class OnepageChatt extends PolymerElement {
                 justify-content: left;
                 flex-flow: row wrap;
                 align-items: stretch;
-                padding: 14px var(--padding) 0 var(--padding);
             }
 
             input.name {
                 width: auto;
-                padding: 7px;
+                padding: 2px;
                 background: transparent;
                 border: 1px solid rgba(240,240,240,0.1);
-                font-size: 16px;
+                font-size: 14px;
                 color: var(--white);
+                margin-right: 6px;
             }
 
             input.mess {
-                padding: 10px;
-                font-size: 16px;
+                flex-grow: 1;
+                padding: 6px;
+                font-size: 14px;
                 border: 0;
                 border-top-left-radius: 7px; 
                 border-top-right-radius: 7px;
                 border-bottom-right-radius: 7px;
-                flex-grow: 1;
+            }
+
+            input.name, input.mess {
+                margin-bottom: 6px;
             }
 
             .message-row {
@@ -113,7 +125,8 @@ export default class OnepageChatt extends PolymerElement {
                 background: transparent;
             }
 
-            button.small:active {border:0;
+            button.small:active {
+                border:0;
             }
 
             button.small:hover {
@@ -129,6 +142,31 @@ export default class OnepageChatt extends PolymerElement {
             
             button:focus {
                 outline:0;
+            }
+
+            .pencil-button {
+                position: absolute;
+                bottom: 6px;
+                right: 6px;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: rgba(96,161,199,0.8);
+                z-index: var(--z-index-top);
+                box-shadow: 1px 1px 12px black;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: all .5s ease-in-out;
+            }
+            .pencil-button:hover {
+                background: white;
+            }
+            .pencil-button span.icon-pencil{
+                transition: all .5s ease-in-out;
+            }
+            .pencil-button:hover span.icon-pencil{
+                transform: scale(1.5) ;
             }
         </style>
         
@@ -151,7 +189,11 @@ export default class OnepageChatt extends PolymerElement {
                 <input class="mess" placeholder="Säger.." value="[[message]]" on-change="updateMessage" required/> 
             </div>
             <onepage-button on-click="submit">Skicka</onepage-button>
-        </div>        
+        </div>   
+        
+        <div class="pencil-button">
+            <span class="icon-pencil"></span>
+        </div>
         `
     }
 

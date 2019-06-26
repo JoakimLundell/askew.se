@@ -9,8 +9,10 @@ export default class OnepageHome extends PolymerElement {
         :host {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
+            align-items: center;
             height: 100%;
+            padding-top: 20px;
         }
 
         .askew-text {
@@ -18,9 +20,13 @@ export default class OnepageHome extends PolymerElement {
             flex-direction: row;
             justify-content: space-between;
             color: var(--white);
-            font-size: 25vw;
-            line-height: 25vw;
+            font-size: 40px;
+            line-height: 40px;
             font-weight: bolder;
+            border: 0px solid pink;
+            min-width: 300px;
+            max-width: 500px;
+            padding-top: 40px;
         }
 
         .askew-text > span {
@@ -71,16 +77,86 @@ export default class OnepageHome extends PolymerElement {
             from {transform: translatex(-22vw);}
             to {transform: translatex(-8vw);}
         }
-            
+        /* CIRCLE */
+        .circle__box {
+            width: 250px;
+            height: 250px;
+            margin: 50px auto;
+            position: absolute;
+            top: calc( calc( var(--vh) * 50) - 113px - 70px);
+            left:0;
+            right:0;
+          }
+        .circle__content {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            text-align: center;
+        }
+          
+          .circle__wrapper {
+            width: 125px;
+            height: 250px;
+            position: absolute;
+            top: 0;
+            overflow: hidden;
+          }
+          
+          .circle__wrapper--right {
+            right: 0;
+          }
+          
+          .circle__wrapper--left {
+            left: 0;
+          }
+          
+          .circle__whole {
+            width: 226px;
+            height: 226px;
+            border: 12px solid transparent;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            transform: rotate(-135deg);
+          }
+          
+          .circle__right {
+            border-top: 12px solid rgba(28,63,82,0.8);
+            border-right: 12px solid rgba(58,127,169, 0.8);
+            right: 1px;
+            animation: circleRight 1s linear forwards;
+          }
+          
+          .circle__left {
+            border-bottom: 12px solid rgba(28,63,82,0.8);
+            border-left: 12px solid rgba(58,127,169, 0.8);
+            left: 1px;
+            animation: circleLeft 1s linear forwards;
+          }
+          
+          @keyframes circleRight {
+            0% {
+              transform: rotate(-135deg);
+            }
+            50%,
+            100% {
+              transform: rotate(45deg);
+            }
+          }
+          
+          @keyframes circleLeft {
+            0%,
+            50% {
+              transform: rotate(-135deg);
+            }
+            100% {
+              -webkit-transform: rotate(45deg);
+            }
+          }    
         </style>
 
-        <div class="askew-text">
-            <span class="a-letter">W</span>
-            <span class="s-letter">E</span>
-            <span class="k-letter">'</span>
-            <span class="w-letter">R</span>
-            <span class="w-letter">E</span>
-        </div>
+        
 
         <div class="askew-text">
             <span class="a-letter">A</span>
@@ -89,6 +165,17 @@ export default class OnepageHome extends PolymerElement {
             <span class="e-letter">E</span>
             <span class="w-letter">W</span>
         </div>
+
+        <div class="circle__box">
+            <div class="circle__wrapper circle__wrapper--right">
+                <div class="circle__whole circle__right"></div>
+            </div>
+            <div class="circle__wrapper circle__wrapper--left">
+                <div class="circle__whole circle__left"></div>
+            </div>
+            <div class="circle__content"></div>
+        </div>
+       
 
         
         `

@@ -1,6 +1,7 @@
 import { html, PolymerElement } from './../../node_modules/@polymer/polymer/polymer-element.js';
 import {} from './../../node_modules/@polymer/polymer/lib/elements/dom-repeat.js';
 import {} from './../../node_modules/@polymer/polymer/lib/elements/dom-if.js';
+
 export default class OnepageHeader extends PolymerElement {
 
     constructor() {
@@ -9,70 +10,84 @@ export default class OnepageHeader extends PolymerElement {
     
     static get template() {
         return html`
+        <link rel="stylesheet" href="./../shared/icons.css" />
+
         <style>
             :host {
                 grid-area: header;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;;
-                align-items: center;
+                align-items: flex-end;
                 flex-wrap: wrap;
                 color: white;
                 background-color: transparent;
                 
-                margin-left: 10px;
-                margin-right: 10px;
                 box-sizing: border-box;
+                transition: background 2s ease;
+                margin: 0 6px 6px 6px;
+                
             }
 
-            :host [selected] {
+            :host [selected], :host [selected] span {
                 color: white;
-                border-bottom: 1px solid white;
+                transition: color 2s ease;
             }
 
             a {
                 text-decoration: none;
                 color: white;
-                
                 font-family: 'open sans';
-                color: rgba(255,255,255,0.8);
-                /*text-shadow: 1px 1px 4px rgba(0,0,0,0.5);*/
-                font-size: 14px;
-                text-transform: uppercase;
-                
-                border-bottom: 1px solid rgba(255,255,255,0.6);
+                color: rgba(96,161,199,1);
+                text-shadow: 1px 1px 10px red:
+                font-size: 140px;
+                text-transform: capitalize;
+                letter-spacing: 1px;
+                /*border-top: 1px solid rgba(44,98,130,1);*/
+                border-bottom: 1px solid rgba(44,98,130,1);
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                padding: 0 6px 8px 6px;
+                padding: 0 6px 12px 6px;
                 flex: 1;
+                transition: all 0.5s ease;
+                
+                text-shadow: 1px 1px 20px #112533;
+
             }
 
             a:hover {
-                color: white;
                 border-bottom: 1px solid white;
+                transition: all 0.1s ease;
+                color: white;
             }
-            a:first-child {
-                flex: 0 0 100%;
-                color: red;
-            }
+
         </style>
 
         <template is="dom-repeat" items="{{navigation}}" as="link">
-            <a href="[[link.name]]" on-click="menu" selected$="[[link.open]]">[[link.name]]</a>
+            <a  class$="[[link.icon]]" 
+                href="[[link.name]]" 
+                on-click="menu" 
+                selected$="{{link.active}}">
+            </a>
+            
         </template>
 
-        <template is="dom-if" if="[[auth]]">
-            <a href="login" on-click="menu">User:[[nic]]</a>
-        </template>
-    
-        <template is="dom-if" if="[[!auth]]">
-            <a href="login" on-click="menu">Login</a>
-        </template>    
-   
+       
         <slot></slot>
 
         `
+    }
+
+    ready() {
+        super.ready();
+        this.setLoginIcon();
+    }
+
+    static get observers() {
+        return [
+            'select(currentRoute)'
+        ]
     }
 
     static get properties() {
@@ -84,8 +99,20 @@ export default class OnepageHeader extends PolymerElement {
             selected: {
                 type: Boolean,
                 reflectToAttribute: true
+            },
+            auth: {
+                type: Boolean,
+                reflectToAttribute: true
             }
         }
+    }
+
+    setLoginIcon() {
+        console.log(this.auth);
+        let icon = (this.auth) ? 'icon-user' : 'icon-enter';
+        var item = this.navigation;
+        item[4].icon = icon;
+        this.navigation = item;
     }
 
     menu(event) {
@@ -93,6 +120,15 @@ export default class OnepageHeader extends PolymerElement {
         window.history.pushState({}, null, event.target.href)
         this.dispatchEvent(new CustomEvent('navigate', { bubbles: true, composed: true, detail: { target: event.target.getAttribute('href') } }));
         //this.dispatchEvent(new CustomEvent('route', { bubbles: true, composed: true, detail: { target: event.target.href } }))
+    }
+
+    select(currentRoute){
+        this.navigation.map((nav, i)=>{
+            this.set(`navigation.${i}.active`, false)
+            if(nav.name == currentRoute){
+                this.set(`navigation.${i}.active`, true)
+            }
+        })
     }
 }
 

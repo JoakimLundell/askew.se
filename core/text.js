@@ -21,9 +21,10 @@ export default class OnepageText extends PolymerElement {
 
             :host(.paragraph) {
                 display: block;
-                font-size: 18px;
-                padding-bottom: 3px;
-                background-color: rgba(12,12,12,0.4);
+                font-size: 16px;
+                line-height: 22px;
+                padding: 6px;
+               
             }
 
         </style>

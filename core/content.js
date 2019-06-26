@@ -17,6 +17,7 @@ export default class AskewContent extends PolymerElement {
                 width: 100vw;
                 overflow: hidden;
                 box-sizing: border-box;
+                padding: 0 var(--padding);
             }
 
             ::slotted(*) {
