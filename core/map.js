@@ -42,6 +42,12 @@ export default class OnepageMap extends PolymerElement {
                 border: 0px solid red;
                 padding: 2px;
             }
+
+            .heroTooltipClass {
+                background-color: gold;
+                border: 0px solid red;
+                padding: 2px;
+            }
             span.ago {
                 font-size: 9px;
             }
@@ -83,6 +89,9 @@ export default class OnepageMap extends PolymerElement {
             reload: {
                 type: Boolean,
                 reflectToAttribute: true
+            },
+            circle: {
+                type: Object
             }
         }
     } 
@@ -149,6 +158,7 @@ export default class OnepageMap extends PolymerElement {
 
     initPositions () {
         return new Promise(resolve => {
+            let circle;
             //var myMarkers = this.markers;
             //var map = this.map;
 
@@ -175,6 +185,19 @@ export default class OnepageMap extends PolymerElement {
 
             // custom marker end
 
+            // Circle
+            circle = L.circle([59.294906,18.080416], {
+                color: 'red',
+                weight: 1,
+                fillColor: '#f03',
+                fillOpacity: 0.1,
+                radius: 100
+            }).addTo(this.map);
+            this.set('circle', circle);
+            // circle test end
+
+
+
             // Moments
             moment.locale('sv');
             moment().format();
@@ -184,31 +207,35 @@ export default class OnepageMap extends PolymerElement {
             //console.log(p);
           
             for(let index in p) {
+                let hero = false;
+                let currentClass = 'tooltipClass'
+                if(circle.getBounds().contains([p[index].latitude, p[index].longitude])){
+                    hero = true;
+                }
+
                 let ago = ' <span class="ago">' + moment(p[index].updated).fromNow() + '</span>'
                 let name = (this.auth) ? p[index].name + ago: 'Någon';
+                if(hero) {
+                    name = 'Hjälte: ' + name;
+                    currentClass = 'heroTooltipClass';
+                };
                 //let trainers = 'img/trainers/trainers2.png'
                 var m = L.marker([ p[index].latitude, p[index].longitude], {
                 icon: new trainerIcon({iconUrl: 'img/trainers/' + p[index].icon})
                 }).bindTooltip( name, {
                     direction:'auto',
                     permanent: true,
-                    className: 'tooltipClass',
+                    className: currentClass,
                     offset: [-4, -6],
                     opacity: 0.8
                 }).addTo(this.markers);
+
+                
             };
 
             this.markers.addTo(this.map);
 
-            // Circle
-            var circle = L.circle([59.294906,18.080416], {
-                color: 'red',
-                fillColor: '#f03',
-                fillOpacity: 0.1,
-                radius: 50
-            }).addTo(this.map);
-            // circle test end
-
+            
             resolve();
         });
     }
@@ -227,48 +254,10 @@ export default class OnepageMap extends PolymerElement {
     }
 
     reloadMap() {
-        console.log('trying to reload')
         if(this.get('init')){
-            console.log(' reloading map')
-            //let map = this.map;
-            //map.invalidateSize(true)
-        this.initBounds();
-            //this.dispatchEvent(new CustomEvent('reload', { bubbles: true, composed: true }));
-        
+            this.initBounds();
         }
     }
-
-    /*who() {
-        return new Promise(resolve => {
-          setTimeout(() => {
-            resolve('🤡');
-          }, 200);
-        });
-      }
-      
-    what() {
-        return new Promise(resolve => {
-          setTimeout(() => {
-            resolve('lurks');
-          }, 300);
-        });
-      }
-      
-    where() {
-        return new Promise(resolve => {
-          setTimeout(() => {
-            resolve('in the shadows');
-          }, 500);
-        });
-      }
-      
-      async msg() {
-        const a = await this.who();
-        const b = await this.what();
-        const c = await this.where();
-      
-        console.log(`${ a } ${ b } ${ c }`);
-      }*/
     
     async start() {
         const map = await this.initMap();
@@ -281,11 +270,11 @@ export default class OnepageMap extends PolymerElement {
         if(this.get('init')) {
             const positions = await this.initPositions();
             const bounds = await this.initBounds();
+            
         }
     }
 
     togglezoom() {
-        console.log("toggle zoom");
         this.dispatchEvent(new CustomEvent('toggle-zoom', { bubbles: true, composed: true }));
     }
 

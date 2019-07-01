@@ -35,7 +35,6 @@ export default class AskewLogin extends PolymerElement {
             input {
                 display: block;
                 margin-bottom: 12px;
-                
             }
 
             onepage-loader {
@@ -51,10 +50,12 @@ export default class AskewLogin extends PolymerElement {
             }
             img  {
                 padding: 6px;
+                background: rgba(255,255,255,0.8);
+                border-radius: 12px;
             }
 
             img[active] {
-                background: rgb(96, 161, 199);;
+                background: rgb(96, 161, 199);
                 border-radius: 12px;
             }
 
@@ -146,12 +147,6 @@ export default class AskewLogin extends PolymerElement {
 
         }
     }
-
-    /*ready() {
-        super.ready();
-        this.cred.email = this.email;
-    }*/
-
    
     login(event) {
         this.dispatchEvent(new CustomEvent('login', { bubbles: true, composed: true, detail: { 

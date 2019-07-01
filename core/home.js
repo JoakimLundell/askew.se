@@ -13,6 +13,12 @@ export default class OnepageHome extends PolymerElement {
             align-items: center;
             height: 100%;
             padding-top: 20px;
+           
+        }
+
+        ::slotted(span) {
+          padding-top: calc( calc( var(--vh) * 55));
+          
         }
 
         .askew-text {
@@ -26,7 +32,7 @@ export default class OnepageHome extends PolymerElement {
             border: 0px solid pink;
             min-width: 300px;
             max-width: 500px;
-            padding-top: 40px;
+            padding-top: calc( calc( var(--vh) * 5));
         }
 
         .askew-text > span {
@@ -35,21 +41,21 @@ export default class OnepageHome extends PolymerElement {
         }
 
         .a-letter {
-            transform: translatex(8vw);
+            transform: translatex(8px);
             z-index: var(--z-index-bottom);
             animation: moveA 3s ease;
         }
         @keyframes moveA {
             0% {transform: translatex(40vw);}
-            100% {transform: translatex(8vw)}
+            100% {transform: translatex(8px)}
         }
         .s-letter {
-            transform: translatex(4vw);
+            transform: translatex(4px);
             animation: moveS 3s linear;
         }
         @keyframes moveS {
             from {transform: translatex(30vw);}
-            to {transform: translatex(4vw);}
+            to {transform: translatex(4px);}
         }
         .k-letter {
             z-index: var(--z-index-bottom);
@@ -61,21 +67,21 @@ export default class OnepageHome extends PolymerElement {
             100% {transform: scale(1);}
         }
         .e-letter {
-            transform: translatex(-4vw);
+            transform: translatex(-4px);
             z-index: var(--z-index-bottom);
             animation: moveE 3s ease-in-out;
         }
         @keyframes moveE {
             from {transform: translatex(-16vw);}
-            to {transform: translatex(-4vw);}
+            to {transform: translatex(-4px);}
         }
         .w-letter {
-            transform: translatex(-8vw);
+            transform: translatex(-8px);
             animation: moveW 3s ease;
         }
         @keyframes moveW {
             from {transform: translatex(-22vw);}
-            to {transform: translatex(-8vw);}
+            to {transform: translatex(-8px);}
         }
         /* CIRCLE */
         .circle__box {
@@ -175,6 +181,8 @@ export default class OnepageHome extends PolymerElement {
             </div>
             <div class="circle__content"></div>
         </div>
+
+        <slot></slot>
        
 
         

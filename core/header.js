@@ -17,7 +17,7 @@ export default class OnepageHeader extends PolymerElement {
                 grid-area: header;
                 display: flex;
                 flex-direction: row;
-                justify-content: space-between;;
+                justify-content: space-between;
                 align-items: flex-end;
                 flex-wrap: wrap;
                 color: white;
@@ -53,7 +53,7 @@ export default class OnepageHeader extends PolymerElement {
                 transition: all 0.5s ease;
                 
                 text-shadow: 1px 1px 20px #112533;
-
+                outline:none;
             }
 
             a:hover {
@@ -108,7 +108,6 @@ export default class OnepageHeader extends PolymerElement {
     }
 
     setLoginIcon() {
-        console.log(this.auth);
         let icon = (this.auth) ? 'icon-user' : 'icon-enter';
         var item = this.navigation;
         item[4].icon = icon;
