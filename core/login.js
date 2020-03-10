@@ -14,7 +14,7 @@ export default class AskewLogin extends PolymerElement {
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
-                color: var(--white);
+                color: var(--blue);
                 height: 100%;
                 padding: 12px;
             }
@@ -23,10 +23,6 @@ export default class AskewLogin extends PolymerElement {
             input, button {
                 padding: 6px;
             }
-
-            /*div {
-                padding: 0 var(--padding);
-            }*/
 
             button {
                 margin: var(--padding);
@@ -61,7 +57,6 @@ export default class AskewLogin extends PolymerElement {
 
             div.infotext{
                 padding: 10vw 0 60px 0;
-                text-shadow: 0px 0px 24px black;
             }
             div.login-box {
                 width: 100%;
@@ -74,7 +69,7 @@ export default class AskewLogin extends PolymerElement {
 
         <template is="dom-if" if="[[auth]]">
             <div class="infotext">
-                Du är inloggad som <slot></slot>
+                Dina trainers
             </div>
             
             <template is="dom-if" if="[[newuser]]">
@@ -92,8 +87,6 @@ export default class AskewLogin extends PolymerElement {
                 </template>
             </div>
 
-            <!--onepage-button on-click="logout">Spara namnändring</onepage-button-->
-            <onepage-button on-click="samling">Administrera samlingar</onepage-button>
             <onepage-button on-click="logout">Logout</onepage-button>
         </template>
 

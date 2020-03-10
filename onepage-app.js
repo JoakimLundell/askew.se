@@ -2,7 +2,7 @@ import { PolymerElement, html } from './../node_modules/@polymer/polymer/polymer
 
 
 import OnepageHeader from './core/header.js';
-/*import AskewFooter from './core/footer.js';*/
+import AskewFooter from './core/footer.js';
 import OnepageHome from './core/home.js';
 import OnepageAbout from './core/about.js';
 import OnepageText from './core/text.js';
@@ -82,12 +82,13 @@ export default class App extends RouterMixin(MapMixin(PostMixin(LoginMixin(Polym
         <style>
             :host {
                 display: grid;
-                grid-template-rows: 48px calc( calc( var(--vh) * 100) - 48px);
+                grid-template-rows: 18vh calc( calc( var(--vh) * 100) - calc(18vh + 5px) ) 5px;
                 grid-template-columns: 100vw;
                 grid-template-areas:
                 "header"
-                "content";
-                margin: auto;
+                "content"
+                "footer";
+                
                 box-sizing: border-box;
             }
 
@@ -150,12 +151,12 @@ export default class App extends RouterMixin(MapMixin(PostMixin(LoginMixin(Polym
             }
         </style>
 
-        <onepage-header navigation="[[state.navigation]]" current-route="[[state.viewPage]]" auth="[state.auth]"></onepage-header>
-        
+        <onepage-header navigation="[[state.navigation]]" current-route="[[state.viewPage]]" auth="[state.auth]" nic="[[state.user.name]]"></onepage-header>
+            
         <askew-content loading$="[[state.loading]]" navigation="[[state.navigation]]" view="[[state.viewPage]]">
             
             <onepage-home link="home">
-                <!--span>Latest post:</span--> 
+                [[state.positionCount]] 
             </onepage-home>
            
             <onepage-map link="map" id="map" positions="[[state.positions]]" auth="[[state.auth]]" zoom="[[state.map.zoom]]" reload="[[state.reload]]"></onepage-map>
@@ -171,7 +172,8 @@ export default class App extends RouterMixin(MapMixin(PostMixin(LoginMixin(Polym
             </askew-login>
 
         </askew-content>
-        <!--askew-footer auth="[[state.auth]]" nic="[[state.user.name]]">askew.se</askew-footer-->
+        
+        <askew-footer></askew-footer>
         
         <onepage-flash id="flash">[[state.flash.message]]</onepage-flash>
          `
@@ -227,11 +229,9 @@ export default class App extends RouterMixin(MapMixin(PostMixin(LoginMixin(Polym
                     trainers: [],
                     currentRoute: 'map',
                     navigation: [
-                        { 'name': 'home', 'active': true, 'link-name': 'hem', 'icon':'icon-home' },
-                        { 'name': 'map', 'active': false, 'link-name': 'karta', 'icon':'icon-location2' },
-                        { 'name': 'chatt', 'active': false, 'link-name': 'IM', 'icon':'icon-bubbles4' },
-                        { 'name': 'about', 'active': false, 'link-name': 'om', 'icon':'icon-profile' },
-                        { 'name': 'login', 'active': false, 'link-name': 'login', 'icon':'icon-enter' }
+                        { 'name': 'home', 'active': true, 'link-name': 'Hem', 'icon':'icon-home' },
+                        { 'name': 'map', 'active': false, 'link-name': 'Karta', 'icon':'icon-location2' },
+                        { 'name': 'chatt', 'active': false, 'link-name': 'Gästbok', 'icon':'icon-bubbles4' }                        
                     ],
                     viewPage: 'home',
                     reload: false,
@@ -385,10 +385,10 @@ export default class App extends RouterMixin(MapMixin(PostMixin(LoginMixin(Polym
     }
 
     sayWelcome() {
-        this.dispatchEvent(new CustomEvent('flash', { detail: { message: 'Alla min grabbar dem är..' } }));
+        this.dispatchEvent(new CustomEvent('flash', { detail: { message: ' Alla min grabbar dom är' } }));
         setTimeout(() => { 
             this.dispatchEvent(new CustomEvent('flash', { detail: { message: 'DJUUUUUUUUUUUUU!' } }));
-        }, 1000);
+        }, 900);
     }
     
 
@@ -492,7 +492,12 @@ export default class App extends RouterMixin(MapMixin(PostMixin(LoginMixin(Polym
             {'name': 'trainers2.png', 'active': (myTrainers === 'trainers2.png')? true : false},
             {'name': 'trainers3.png', 'active': (myTrainers === 'trainers3.png')? true : false},
             {'name': 'trainers4.png', 'active': (myTrainers === 'trainers4.png')? true : false},
-            {'name': 'trainers5.png', 'active': (myTrainers === 'trainers5.png')? true : false}];
+            {'name': 'trainers5.png', 'active': (myTrainers === 'trainers5.png')? true : false},
+            {'name': 'trainers6.png', 'active': (myTrainers === 'trainers6.png')? true : false},
+            {'name': 'trainers7.png', 'active': (myTrainers === 'trainers7.png')? true : false},
+            {'name': 'trainers8.png', 'active': (myTrainers === 'trainers8.png')? true : false},
+            {'name': 'trainers9.png', 'active': (myTrainers === 'trainers9.png')? true : false},
+            {'name': 'trainers10.png', 'active': (myTrainers === 'trainers10.png')? true : false}];
         return trainers;
     }
     

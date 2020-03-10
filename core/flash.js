@@ -7,8 +7,8 @@ export default class OnepageFlash extends PolymerElement {
         <style>
             :host {
                 position: fixed;
-                top: 50px;
-                left: 12px;   
+                bottom: 10px;
+                left: 10px;   
                 z-index: var(--z-index-top);
             }
          </style>

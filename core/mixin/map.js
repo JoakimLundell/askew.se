@@ -17,7 +17,22 @@ export default function MapMixin(superclass) {
             let count = 0;
             if(positions !== null) {
                 count = Object.keys(positions).length;
+
+                // See if we have any old positions
+                for(let index in positions)
+                {
+                    
+                    let date = new Date(positions[index].updated)
+                    let dateFrom = moment().subtract(2,'d')
+                    if(moment(date).isBefore(dateFrom)){
+                        // Remove old positions
+                        let post = firebase.database().ref('positions/' + positions[index].uid );
+                        post.remove();
+                    } 
+                }
             }
+            
+
             this.set('state.positionCount', count);
             this.set('state.positions', positions);
         }

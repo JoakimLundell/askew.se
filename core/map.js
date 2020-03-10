@@ -28,19 +28,21 @@ export default class OnepageMap extends PolymerElement {
             .autozoom {
                 position: absolute;
                 z-index: var(--z-index-higher);
-                left: 6px;
-                top: 6px;
-                background: white;
-                border: 1px solid #ccc;
+                right: 50px;
+                bottom: 29px;
+                background: var(--light-blue);
+                /*border: 1px solid #ccc;*/
                 border-radius: 2px;
                 padding-right: 7px;
                 color: black;
                 border-radius: 4px;
+                box-shadow: 1px 1px 2px #1b3f55;
             }
 
             .tooltipClass {
                 border: 0px solid red;
                 padding: 2px;
+                opacity: 0.8;
             }
 
             .heroTooltipClass {
@@ -48,14 +50,28 @@ export default class OnepageMap extends PolymerElement {
                 border: 0px solid red;
                 padding: 2px;
             }
+
+            .zombie {
+                background-color: white;
+                border: 0px solid red;
+                padding: 2px;
+                opacity: 0.5 !important;
+            }
+            .zombieIconClass {
+                opacity: 0.5 !important;
+                -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+                filter: grayscale(100%);
+            }
             span.ago {
                 font-size: 9px;
             }
         </style>
 
-        <div id="map"></div>
+        <div id="map">
+               
+        </div>
 
-        <div class="autozoom">
+        <div class="autozoom leaflet-control">
             <input type="checkbox" name="autozoom" id="autozoom" checked="{{zoom}}" on-click="togglezoom" />
             <label for="autozoom">Zoom on update</label>      
         </div>
@@ -143,9 +159,18 @@ export default class OnepageMap extends PolymerElement {
 	                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
                 }).addTo(map);*/
 
-                var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+                /*var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                }).addTo(map);*/
+
+                /*var OpenStreetMap_HOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 	                maxZoom: 19,
 	                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
+                }).addTo(map);*/
+
+                var Stadia_AlidadeSmooth = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+                    maxZoom: 20,
+                    attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
                 }).addTo(map);
 
                 map.zoomControl.setPosition('bottomright');
@@ -190,7 +215,7 @@ export default class OnepageMap extends PolymerElement {
                 color: 'red',
                 weight: 1,
                 fillColor: '#f03',
-                fillOpacity: 0.1,
+                fillOpacity: 0,
                 radius: 100
             }).addTo(this.map);
             this.set('circle', circle);
@@ -209,25 +234,35 @@ export default class OnepageMap extends PolymerElement {
             for(let index in p) {
                 let hero = false;
                 let currentClass = 'tooltipClass'
+                let iconClass = 'iconClass'
                 if(circle.getBounds().contains([p[index].latitude, p[index].longitude])){
                     hero = true;
                 }
 
-                let ago = ' <span class="ago">' + moment(p[index].updated).fromNow() + '</span>'
-                let name = (this.auth) ? p[index].name + ago: 'Någon';
+                //let ago = ' <br /><span class="ago">' + moment(p[index].updated).fromNow() + '</span>'
+                let name = (this.auth) ? p[index].name : 'Okänd';
                 if(hero) {
-                    name = 'Hjälte: ' + name;
+                    name = name;
                     currentClass = 'heroTooltipClass';
                 };
+
+                let dateFrom = moment().subtract(1,'d')
+                if(moment(p[index].updated).isBefore(dateFrom)){
+                    currentClass = 'zombie';
+                    iconClass = 'zombieIconClass'
+                } 
+
                 //let trainers = 'img/trainers/trainers2.png'
                 var m = L.marker([ p[index].latitude, p[index].longitude], {
-                icon: new trainerIcon({iconUrl: 'img/trainers/' + p[index].icon})
+                    icon: new trainerIcon({
+                        iconUrl: 'img/trainers/' + p[index].icon,
+                        className: iconClass
+                    })
                 }).bindTooltip( name, {
                     direction:'auto',
                     permanent: true,
                     className: currentClass,
-                    offset: [-4, -6],
-                    opacity: 0.8
+                    offset: [-4, -6]
                 }).addTo(this.markers);
 
                 

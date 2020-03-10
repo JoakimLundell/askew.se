@@ -10,14 +10,14 @@ export default class AskewContent extends PolymerElement {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-                align-items: center;
+                /*align-items: center;*/
                 background-color: transparent;
                 color: var(--white);
                 height: 100%;
                 width: 100vw;
                 overflow: hidden;
                 box-sizing: border-box;
-                padding: 0 var(--padding);
+                /*padding: 0 var(--padding);*/
             }
 
             ::slotted(*) {
@@ -31,21 +31,6 @@ export default class AskewContent extends PolymerElement {
             :host([loading]) {
                 filter: blur(8px);
                 -webkit-filter: blur(8px);
-            }
-        
-            .loader {
-             /*   position: absolute;
-                left:10px;
-                top: 10åx;
-                height: 66px;
-                width: 66px;
-                background-color: transparent;
-                
-                border: 3px solid rgba(255,255,255,0.1);
-                border-top: 3px solid var(--accent-color);
-                border-radius: 50%;*/
-                //animation: spin 1.8s linear infinite;
-                
             }
 
             @keyframes spin {
@@ -83,7 +68,7 @@ export default class AskewContent extends PolymerElement {
     }
 
     select (navigation) {
-        console.log("navigation uppdaterades")
+        //console.log("navigation uppdaterades")
         /*navigation.forEach(element => {
             if(element.open) {
                 this.view = element.name;

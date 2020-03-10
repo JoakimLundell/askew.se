@@ -22,38 +22,39 @@ export default class OnepageChatt extends PolymerElement {
             .content {
                 flex: 1;
                 overflow-y: scroll;
+                height: 80vh;
             }
-
+            
             input.name {
-                width: auto;
+                
                 padding: 2px;
                 background: transparent;
                 border: 1px solid rgba(240,240,240,0.1);
                 font-size: 14px;
-                color: var(--white);
+                color: var(--blue);
                 margin-right: 6px;
+                text-align: right;
             }
 
             input.mess {
                 flex-grow: 1;
                 padding: 6px;
                 font-size: 14px;
-                border: 0;
+                border: 1;
                 border-top-left-radius: 7px; 
                 border-top-right-radius: 7px;
                 border-bottom-right-radius: 7px;
             }
 
-            input.name, input.mess {
-                margin-bottom: 10px;
-            }
-
+         
             .message-row {
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: flex-end;
                 padding: 7px var(--padding);
+                max-width: 900px;
+                margin: 0 auto;
             }
 
             .message-row:nth-child(odd) {
@@ -62,17 +63,16 @@ export default class OnepageChatt extends PolymerElement {
             }
 
             span.name {
-                color: var(--white);
-                text-shadow: 0px 0px 10px rgba(0,0,0,0.6);
+                width: auto;
+                color: var(--blue);
             }
 
             .message {
-                background: white;
-                color: black;
-                padding: 2px 7px;
+                background: var(--blue);
+                color: white;
+                padding: 4px 10px;
                 border-top-left-radius: 7px; 
                 border-top-right-radius: 7px;
-                box-shadow: 3px 3px 7px black;
             }
 
             .message-row:nth-child(even) .message {
@@ -123,82 +123,33 @@ export default class OnepageChatt extends PolymerElement {
             /* input area */
 
             .input-area {
-                position: absolute;
-                bottom: 6px;
-                right: 6px;
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                background: rgb(96,161,199);
-                background: rgb(44,98,130);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                background: #c1c9cc;
                 color: white;
-                z-index: var(--z-index-top);
-                box-shadow: 1px 1px 12px black;
+                padding: 40px 20px;
+                border-top: 2px solid var(--blue);
+            }
+
+            .input-area > .inputs {                
                 display: flex;
-                flex-direction: column;
-                justify-content: start;
-                flex-wrap: wrap;
-                overflow: hidden;    
-                transition: all .5s ease;
-            }
-
-            .input-area:hover {
-                animation: bump 0.5s ease;
-            }
-
-            .input-area.open:hover {
-                animation: no;
-            }
-
-            @keyframes bump {
-                0% {transform: rotate(0deg)}
-                50% {transform: rotate(-10deg)}
-                100% {transform: rotate(0deg)}
-            }
-            
-            .input-area.open {
-                background: rgba(44,98,130,1);
-                flex-direction: column;
-                width: calc(100% - 12px);
-                height: calc(100% - 12px - 40px);
-                border-radius: 0;
-                transition: all 0.5s ease;
-                opacity: 1;
-            }
-
-            .input-area > .header {
-                display: flex;
+                flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                height: 60px;
-                background: transparent;
+                align-content: center;
+                flex-wrap: wrap;
+                color: var(--blue);
+                width: 100%;
+                max-width: 900px;
+                margin: 0 auto;
             }
 
-            .input-area > .header > span {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 60px;
-                width: 60px;
-            }
+            .input-area > .inputs > onepage-button {
+                margin: 5px 0 5px 10px;
+            }    
 
-            .input-area > .header > .close {
-                font-weight: normal;
-            }
-
-            .input-area > .header > .close, .input-area > .header > .icon-pencil {
-                cursor: pointer;
-            }
-
-            .input-area > .inputs {
-                padding: 10px;
-                display: flex;
-                flex-direction: column;
-                max-width: 300px;
-                margin: auto;
-            }
-
-            @media screen and (min-width: 900px) {
+            /*@media screen and (min-width: 900px) {
                 :host {
                     flex-direction: row;
                 }
@@ -217,7 +168,7 @@ export default class OnepageChatt extends PolymerElement {
                     transition: all 0.5s ease;
                     opacity: 1;
                 }
-            }
+            }*/
             
         </style>
         
@@ -233,16 +184,11 @@ export default class OnepageChatt extends PolymerElement {
             </template>
         </div> 
         
-        <div class$="input-area {{getClass(inputAreaVisible)}}">
-            
-            <div class="header">
-                <span class="icon-pencil" on-click="toggleInputAreaVisible"></span>
-                <span class="close" on-click="toggleInputAreaVisible">&#10006;</span>
-            </div>
+        <div class="input-area">
             
             <div class="inputs">
+                <span><input class="name" placeholder="Name" value="[[name]]" on-change="updateName"  size="2" required/></span>
                 <input class="mess" placeholder="Säger.." value="[[message]]" on-change="updateMessage" required/> 
-                <input class="name" placeholder="Name" value="[[name]]" on-change="updateName" required/>
                 <onepage-button on-click="submit">Skicka</onepage-button>
             </div>
 
@@ -267,10 +213,10 @@ export default class OnepageChatt extends PolymerElement {
                 type: String,
                 reflectToAttribute: true
             },
-            inputAreaVisible: {
+            /*inputAreaVisible: {
                 type: Boolean,
                 value: false
-            }
+            }*/
         }
     }
 
@@ -281,10 +227,10 @@ export default class OnepageChatt extends PolymerElement {
     ready() {
         super.ready();
         // On screen resize check if input area should be visible
-        const throttleHandler = this.throttle(500, this.checkInputAreaVisible.bind(this))
-        window.addEventListener('resize', throttleHandler);
+        //const throttleHandler = this.throttle(500, this.checkInputAreaVisible.bind(this))
+        //window.addEventListener('resize', throttleHandler);
         // To check if input area should be visible
-        this.checkInputAreaVisible() ;  
+        //this.checkInputAreaVisible() ;  
     }
 
     throttle(delay, fn) {
@@ -299,7 +245,7 @@ export default class OnepageChatt extends PolymerElement {
         }
     }
     
-    checkInputAreaVisible() {
+    /*checkInputAreaVisible() {
         this.inputAreaVisible = (window.innerWidth >= 900) ? true : false;
     }
 
@@ -309,7 +255,7 @@ export default class OnepageChatt extends PolymerElement {
 
     getClass(inputAreaVisible){
         return inputAreaVisible ? "open" : "";
-    }
+    }*/
 
 
     delete(event) {
@@ -318,7 +264,7 @@ export default class OnepageChatt extends PolymerElement {
     }
 
     submit () {
-        this.checkInputAreaVisible();
+        //this.checkInputAreaVisible();
         this.dispatchEvent(new CustomEvent('submit-chatt', { bubbles: true, composed: true }));    
     }
 

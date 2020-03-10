@@ -9,24 +9,21 @@ export default class OnepageButton extends PolymerElement {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background: rgb(96,161,199);
-                color: white;
-                padding: 4px;
-                margin: 0 0 6px 0;
-                border-radius: 4px;
-                transition: box-shadow 1s ease;
+                background: var(--light-blue);
+                color: var(--blue);
+                padding: 5px 20px;
+                
+                border-radius: 5px;
             }
 
             :host(:hover) {
-                box-shadow: 2px 2px 20px black; 
-                color: white;
-                transition: box-shadow 1s ease;
+                background: var(--blue);
+                color: var(--light-blue);
             }
 
             :host(:active) {
-                box-shadow: 2px 2px 20px black; 
-                color: white;
-                transition: box-shadow 1s ease;
+                background: var(--blue);
+                color: var(--light-blue);
             }
         </style>
 
