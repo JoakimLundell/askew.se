@@ -16,7 +16,6 @@ export default class OnepageChatt extends PolymerElement {
                 justify-content: flex-end;
                 align-items: left;
                 color: black;
-                height: 100vh;
             }
             
             .content {
@@ -145,29 +144,7 @@ export default class OnepageChatt extends PolymerElement {
 
             .input-area > .inputs > onepage-button {
                 margin: 5px 0 5px 10px;
-            }    
-
-            /*@media screen and (min-width: 900px) {
-                :host {
-                    flex-direction: row;
-                }
-
-                .input-area {
-                    position: relative;
-                    box-shadow: 0px 0px 0px black;
-                    right: 0;
-                    bottom: 0;
-                }
-
-                .input-area.open {
-                    width: 300px;
-                    height: auto;
-                    border-radius: 0;
-                    transition: all 0.5s ease;
-                    opacity: 1;
-                }
-            }*/
-            
+            }     
         </style>
         
         <div class="content">    
