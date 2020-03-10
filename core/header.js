@@ -55,7 +55,7 @@ export default class OnepageHeader extends PolymerElement {
                 justify-content: space-around;
                 align-items: center;
                 background: transparent;
-                padding: 10px; 
+                padding: 0 10px; 
             }
 
             .logo,
@@ -80,8 +80,8 @@ export default class OnepageHeader extends PolymerElement {
             }
             
             .logoimg {
-                width: calc(var(--header) - 20px);
-                height: calc(var(--header) - 20px);
+                width: calc(var(--header) - 25px);
+                height: calc(var(--header) - 25px);
                 max-width: 120px;
                 max-height: 120px;
                 background-image: url("img/logo.png");
