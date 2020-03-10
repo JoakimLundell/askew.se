@@ -17,7 +17,6 @@ export default class OnepageHeader extends PolymerElement {
                 grid-area: header;
                 display: flex;
                 flex-direction: column;
-                justify-content: flex-start;
                 background: white;
                 margin: 0;
             }
