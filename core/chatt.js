@@ -19,7 +19,7 @@ export default class OnepageChatt extends PolymerElement {
             }
             
             .content {
-                flex: 1;
+                height: 80%;
                 overflow-y: scroll;
             }
             
@@ -126,6 +126,7 @@ export default class OnepageChatt extends PolymerElement {
                 background: #c1c9cc;
                 color: white;
                 padding: 30px 20px;
+                height: 20%;
                 border-top: 2px solid var(--blue);
             }
 
