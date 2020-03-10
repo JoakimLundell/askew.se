@@ -82,7 +82,7 @@ export default class App extends RouterMixin(MapMixin(PostMixin(LoginMixin(Polym
         <style>
             :host {
                 display: grid;
-                grid-template-rows: 18vh calc( calc( var(--vh) * 100) - calc(18vh + 5px) ) 5px;
+                grid-template-rows: var(--header) calc( calc( var(--vh) * 100) - calc(var(--header) + 5px) ) 5px;
                 grid-template-columns: 100vw;
                 grid-template-areas:
                 "header"
@@ -90,6 +90,7 @@ export default class App extends RouterMixin(MapMixin(PostMixin(LoginMixin(Polym
                 "footer";
                 
                 box-sizing: border-box;
+                
             }
 
             @media screen and (min-width: 1010px) {

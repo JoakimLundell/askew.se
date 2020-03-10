@@ -17,6 +17,7 @@ export default class OnepageHeader extends PolymerElement {
                 grid-area: header;
                 display: flex;
                 flex-direction: column;
+                justify-content: flex-start;
                 background: white;
                 margin: 0;
             }
@@ -49,14 +50,13 @@ export default class OnepageHeader extends PolymerElement {
             }
 
             .content {
-
+                flex:1;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-around;
                 align-items: center;
                 background: transparent;
-                padding: 10px;
-                
+                padding: 10px; 
             }
 
             .logo,
@@ -81,8 +81,8 @@ export default class OnepageHeader extends PolymerElement {
             }
             
             .logoimg {
-                width: 20vw;
-                height: 20vw;
+                width: calc(var(--header) - 20px);
+                height: calc(var(--header) - 20px);
                 max-width: 120px;
                 max-height: 120px;
                 background-image: url("img/logo.png");

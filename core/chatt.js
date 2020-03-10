@@ -22,11 +22,9 @@ export default class OnepageChatt extends PolymerElement {
             .content {
                 flex: 1;
                 overflow-y: scroll;
-                height: 80vh;
             }
             
-            input.name {
-                
+            input.name { 
                 padding: 2px;
                 background: transparent;
                 border: 1px solid rgba(240,240,240,0.1);
@@ -128,7 +126,7 @@ export default class OnepageChatt extends PolymerElement {
                 justify-content: space-around;
                 background: #c1c9cc;
                 color: white;
-                padding: 40px 20px;
+                padding: 30px 20px;
                 border-top: 2px solid var(--blue);
             }
 
@@ -187,7 +185,7 @@ export default class OnepageChatt extends PolymerElement {
         <div class="input-area">
             
             <div class="inputs">
-                <span><input class="name" placeholder="Name" value="[[name]]" on-change="updateName"  size="2" required/></span>
+                <span>[[name]]&nbsp;<!--input class="name" placeholder="Name" value="[[name]]" on-change="updateName"required/--></span>
                 <input class="mess" placeholder="Säger.." value="[[message]]" on-change="updateMessage" required/> 
                 <onepage-button on-click="submit">Skicka</onepage-button>
             </div>
