@@ -245,7 +245,7 @@ export default class OnepageMap extends PolymerElement {
                     currentClass = 'heroTooltipClass';
                 };
 
-                let dateFrom = moment().subtract(1,'d')
+                let dateFrom = moment().subtract(1,'hour')
                 if(moment(p[index].updated).isBefore(dateFrom)){
                     currentClass = 'zombie';
                     iconClass = 'zombieIconClass'
