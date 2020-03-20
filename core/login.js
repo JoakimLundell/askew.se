@@ -97,7 +97,7 @@ export default class AskewLogin extends PolymerElement {
             </div> 
             
             <div class="login-box">
-                <input autocomplete="off" placeholder="Skriv din mailadress" id="email" value="[[email]]" on-change="changeEmail" required></input>
+                <input placeholder="Skriv din mailadress" id="email" value="[[email]]" on-change="changeEmail" name="email" required></input>
                 <input type="password" placeholder="password" id="password" value="[[cred.pw]]" required></input>
                 <onepage-button on-click="login">Login
                     <onepage-loader spin></onepage-loader>
